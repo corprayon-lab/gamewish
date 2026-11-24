@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Évite les obstacles</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-neon">
+  <main class="jeu" id="jeu">
+
+    <section class="ecran visible" id="ecran-accueil">
+      <header class="barre-haut">
+        <div class="profil">
+          <span class="niveau" id="niveau">Niveau 1</span>
+          <button type="button" class="bouton-icone" id="bouton-parametres" aria-label="Paramètres">⚙️</button>
+        </div>
+
+        <div class="ressources">
+          <span class="pieces">🪙 <strong id="pieces-accueil">0</strong></span>
+          <span class="record">👑 <strong id="record-accueil">0</strong></span>
+        </div>
+      </header>
+
+      <div class="zone-personnage">
+        <div class="personnage-accueil skin-cube" id="personnage-accueil"></div>
+      </div>
+
+      <button type="button" class="bouton-jouer" id="bouton-jouer">JOUER</button>
+
+      <div class="menu-secondaire">
+        <button type="button" id="bouton-personnages">Personnages</button>
+        <button type="button" id="bouton-themes">Thèmes</button>
+        <button type="button" id="bouton-defis">Défis</button>
+      </div>
+    </section>
+
+    <section class="ecran" id="ecran-jeu" hidden>
+      <header class="barre-haut">
+        <button type="button" class="bouton-icone" id="bouton-pause" aria-label="Pause">⏸️</button>
+
+        <div class="informations-partie">
+          <span>Score : <strong id="score">0</strong></span>
+          <span>🪙 <strong id="pieces-partie">0</strong></span>
+        </div>
+      </header>
+
+      <div class="jauge-bonus" id="jauge-bonus" hidden>
+        <span id="jauge-nom">Bonus</span>
+        <div class="jauge-fond">
+          <div class="jauge-remplissage" id="jauge-remplissage"></div>
+        </div>
+      </div>
+
+      <p class="message" id="message">
+        Appuie une fois pour sauter. Appuie deux fois pour faire un double saut.
+      </p>
+
+      <div class="terrain" id="terrain">
+        <div class="personnage skin-cube" id="personnage"></div>
+        <div class="obstacle" id="obstacle"></div>
+        <div class="sol"></div>
+      </div>
+    </section>
+
+    <section class="ecran ecran-fin" id="ecran-fin" hidden>
+      <h2>Partie terminée</h2>
+
+      <p class="badge-record" id="badge-record" hidden>NOUVEAU RECORD !</p>
+
+      <p class="resultat">Score : <strong id="score-fin">0</strong></p>
+      <p class="resultat">Record : <strong id="record-fin">0</strong></p>
+      <p class="resultat">Pièces gagnées : <strong id="pieces-fin">0</strong></p>
+
+      <div class="boutons-fin">
+        <button type="button" id="bouton-accueil">Accueil</button>
+        <button type="button" id="bouton-rejouer">Rejouer</button>
+      </div>
+    </section>
+
+    <dialog class="fenetre" id="fenetre-parametres">
+      <h3>Paramètres</h3>
+
+      <label class="ligne-parametre">
+        <span>Son</span>
+        <input type="checkbox" id="bascule-son" checked>
+      </label>
+
+      <button type="button" class="bouton-fermer" id="fermer-parametres">Fermer</button>
+    </dialog>
+
+    <dialog class="fenetre" id="fenetre-personnages">
+      <h3>Personnages et traînées</h3>
+      <div class="liste-objets" id="liste-personnages"></div>
+
+      <h3>Traînées</h3>
+      <div class="liste-objets" id="liste-trails"></div>
+
+      <p class="message-boutique" id="message-boutique"></p>
+
+      <button type="button" class="bouton-fermer" id="fermer-personnages">Fermer</button>
+    </dialog>
+
+    <dialog class="fenetre" id="fenetre-themes">
+      <h3>Thèmes</h3>
+      <div class="liste-objets" id="liste-themes"></div>
+
+      <p class="message-boutique" id="message-themes"></p>
+
+      <button type="button" class="bouton-fermer" id="fermer-themes">Fermer</button>
+    </dialog>
+
+    <dialog class="fenetre" id="fenetre-defis">
+      <h3>Défis</h3>
+
+      <ul class="liste-defis">
+        <li>Atteindre 20 points</li>
+        <li>Collecter 10 pièces en une partie</li>
+        <li>Utiliser un bouclier</li>
+        <li>Atteindre 50 points</li>
+      </ul>
+
+      <button type="button" class="bouton-fermer" id="fermer-defis">Fermer</button>
+    </dialog>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

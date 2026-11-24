@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Memory</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+
+  <style>
+    /* Arrière-plan */
+
+    body {
+      position: relative;
+      isolation: isolate;
+      background:
+        radial-gradient(
+          ellipse at 15% 15%,
+          rgba(139, 92, 246, 0.25),
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 85% 85%,
+          rgba(34, 211, 238, 0.16),
+          transparent 50%
+        ),
+        #0b1020;
+    }
+
+    .decoration-fond {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .carte-decorative {
+      position: absolute;
+      width: 100px;
+      height: 140px;
+      border: 2px solid rgba(167, 139, 250, 0.12);
+      border-radius: 18px;
+      background: rgba(167, 139, 250, 0.025);
+      transform: rotate(-20deg);
+    }
+
+    .carte-decorative:nth-child(1) {
+      top: 12%;
+      left: 7%;
+    }
+
+    .carte-decorative:nth-child(2) {
+      top: 22%;
+      right: 8%;
+      transform: rotate(24deg);
+    }
+
+    .carte-decorative:nth-child(3) {
+      bottom: 8%;
+      left: 14%;
+      transform: rotate(15deg);
+    }
+
+    /* Compteur de pièces */
+
+    .conteneur {
+      position: relative;
+    }
+
+    .barre-ressources {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .solde-pieces {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 9px 16px;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      border-radius: 999px;
+      background: rgba(35, 29, 21, 0.78);
+      color: #fde68a;
+      box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .icone-piece {
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.3));
+    }
+
+    #compteur-pieces {
+      font-size: 1.15rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .libelle-pieces {
+      color: #d7c499;
+      font-size: 0.85rem;
+    }
+
+    /* Carte principale */
+
+    .carte-menu {
+      border: 1px solid rgba(167, 139, 250, 0.35);
+      background: linear-gradient(
+        145deg,
+        rgba(36, 42, 76, 0.8),
+        rgba(16, 23, 44, 0.9)
+      );
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.4),
+        0 0 35px rgba(139, 92, 246, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    /* Titre */
+
+    .titre-memory {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .titre-memory h1 {
+      text-shadow: 0 3px 18px rgba(167, 139, 250, 0.25);
+    }
+
+    .icone-memory {
+      width: 43px;
+      height: 43px;
+      flex-shrink: 0;
+    }
+
+    .carte-menu .sous-titre {
+      color: #e3e7ff;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .carte-menu .aide {
+      max-width: 330px;
+      margin: 24px auto 0;
+      color: #9daacb;
+      font-size: 0.85rem;
+    }
+
+    /* Modes de jeu */
+
+    .bouton-mode {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .icone-mode {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .bouton-mode.actif {
+      border-color: #c4b5fd;
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      color: #ffffff;
+      box-shadow:
+        0 5px 18px rgba(139, 92, 246, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    /* Boutons du menu */
+
+    .actions-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .actions-menu > button {
+      width: 100%;
+      max-width: 300px;
+      margin: 0;
+    }
+
+    .bouton-principal {
+      box-shadow:
+        0 10px 28px rgba(139, 92, 246, 0.35),
+        0 3px 12px rgba(103, 232, 249, 0.12);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+    }
+
+    #bouton-boutique {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-color: rgba(251, 191, 36, 0.35);
+      background: rgba(251, 191, 36, 0.07);
+      color: #fde68a;
+    }
+
+    .icone-boutique {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    @media (hover: hover) {
+      .bouton-mode.actif:hover {
+        background: linear-gradient(135deg, #9b70ff, #7477fa);
+      }
+
+      .bouton-principal:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow:
+          0 14px 35px rgba(139, 92, 246, 0.45),
+          0 5px 18px rgba(103, 232, 249, 0.2);
+      }
+
+      #bouton-boutique:hover {
+        background: rgba(251, 191, 36, 0.14);
+        border-color: rgba(251, 191, 36, 0.65);
+      }
+    }
+
+    @media (max-width: 400px) {
+      .titre-memory {
+        gap: 8px;
+      }
+
+      .icone-memory {
+        width: 34px;
+        height: 34px;
+      }
+
+      .solde-pieces {
+        padding: 8px 13px;
+      }
+
+      .carte-decorative {
+        opacity: 0.5;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Décoration -->
+  <div class="decoration-fond" aria-hidden="true">
+    <span class="carte-decorative"></span>
+    <span class="carte-decorative"></span>
+    <span class="carte-decorative"></span>
+  </div>
+
+  <main class="conteneur">
+
+    <!-- Compteur de pièces -->
+    <div class="barre-ressources">
+      <div
+        class="solde-pieces"
+        role="status"
+        aria-label="Solde de pièces"
+      >
+        <svg
+          class="icone-piece"
+          width="26"
+          height="26"
+          viewBox="0 0 32 32"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="16"
+            cy="17"
+            r="12"
+            fill="#B77908"
+          />
+
+          <circle
+            cx="16"
+            cy="15"
+            r="12"
+            fill="#FBBF24"
+            stroke="#FDE68A"
+            stroke-width="2"
+          />
+
+          <circle
+            cx="16"
+            cy="15"
+            r="8"
+            stroke="#D99712"
+            stroke-width="2"
+          />
+
+          <path
+            d="M18.5 11.5H14.5C12 11.5 12 15 14.5 15H17.5C20 15 20 18.5 17.5 18.5H13.5M16 9.5V20.5"
+            stroke="#855008"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <path
+            d="M23 4V8M21 6H25"
+            stroke="#FFFBEB"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <span id="compteur-pieces">0</span>
+        <span class="libelle-pieces">pièces</span>
+      </div>
+    </div>
+
+    <!-- Accueil -->
+    <section id="ecran-accueil" class="ecran visible">
+      <div class="carte-menu">
+
+        <div class="titre-memory">
+          <svg
+            class="icone-memory"
+            viewBox="0 0 48 48"
+            fill="none"
+            aria-hidden="true"
+          >
+            <rect
+              x="6"
+              y="9"
+              width="25"
+              height="33"
+              rx="5"
+              transform="rotate(-12 6 9)"
+              fill="#55418D"
+              stroke="#A78BFA"
+              stroke-width="2"
+            />
+
+            <rect
+              x="19"
+              y="5"
+              width="24"
+              height="33"
+              rx="5"
+              fill="#283B65"
+              stroke="#67E8F9"
+              stroke-width="2"
+            />
+
+            <path
+              d="M31 14L33.5 19L39 20L35 24L36 29L31 26.5L26 29L27 24L23 20L28.5 19Z"
+              fill="#C4B5FD"
+            />
+          </svg>
+
+          <h1>Memory</h1>
+        </div>
+
+        <p class="sous-titre">Retrouve les 8 paires</p>
+
+        <div class="choix-modes">
+
+          <button
+            type="button"
+            class="bouton-mode actif"
+            data-mode="classique"
+          >
+            <svg
+              class="icone-mode"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              aria-hidden="true"
+            >
+              <rect
+                x="3"
+                y="6"
+                width="12"
+                height="15"
+                rx="2"
+              />
+              <path
+                d="M9 6V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4"
+              />
+            </svg>
+
+            Classique
+          </button>
+
+          <button
+            type="button"
+            class="bouton-mode"
+            data-mode="chronometre"
+          >
+            <svg
+              class="icone-mode"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 3h14M5 21h14"/>
+              <path
+                d="M7 3v4l5 5-5 5v4M17 3v4l-5 5 5 5v4"
+              />
+            </svg>
+
+            Chronomètre
+          </button>
+
+          <button
+            type="button"
+            class="bouton-mode"
+            data-mode="inverse"
+          >
+            <svg
+              class="icone-mode"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 7h15M15 3l4 4-4 4"/>
+              <path d="M20 17H5M9 13l-4 4 4 4"/>
+            </svg>
+
+            Inversé
+          </button>
+
+        </div>
+
+        <div class="actions-menu">
+          <button
+            id="bouton-demarrer"
+            type="button"
+            class="bouton-principal"
+          >
+            Commencer la partie
+          </button>
+
+          <button
+            id="bouton-boutique"
+            type="button"
+            class="bouton-secondaire"
+          >
+            <svg
+              class="icone-boutique"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M3 10l2-6h14l2 6"/>
+              <path d="M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/>
+              <path d="M5 13v8h14v-8"/>
+              <path d="M10 21v-6h4v6"/>
+            </svg>
+
+            Boutique de thèmes
+          </button>
+        </div>
+
+        <p class="aide">
+          Choisis ton mode et fais travailler ta mémoire.
+          Chaque victoire te rapporte des pièces.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- Partie -->
+    <section id="ecran-jeu" class="ecran" hidden>
+      <header class="entete-jeu">
+        <h1>Memory</h1>
+
+        <div class="statistiques">
+          <div class="stat">
+            <span class="stat-label">Paires</span>
+            <span id="compteur-paires" class="stat-valeur">
+              0 / 8
+            </span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-label">Coups</span>
+            <span id="compteur-coups" class="stat-valeur">
+              0
+            </span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-label">Temps</span>
+            <span id="chronometre" class="stat-valeur">
+              00:00
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <p
+        id="message-jeu"
+        class="message-jeu"
+        aria-live="polite"
+      >
+        Retourne une première carte.
+      </p>
+
+      <div id="grille-cartes" class="grille-cartes"></div>
+
+      <button
+        id="bouton-recommencer"
+        type="button"
+        class="bouton-secondaire"
+      >
+        Retour au menu
+      </button>
+    </section>
+
+    <!-- Victoire -->
+    <section id="ecran-victoire" class="ecran" hidden>
+      <div class="carte-menu">
+        <h1>Bravo !</h1>
+
+        <p class="sous-titre">
+          Tu as retrouvé toutes les paires.
+        </p>
+
+        <div class="resultats">
+          <p>Coups : <span id="coups-fin">0</span></p>
+          <p>Temps : <span id="temps-fin">00:00</span></p>
+        </div>
+
+        <button
+          id="bouton-rejouer"
+          type="button"
+          class="bouton-principal"
+        >
+          Retour au menu
+        </button>
+      </div>
+    </section>
+
+  </main>
+    <dialog id="fenetre-boutique" aria-labelledby="titre-boutique">
+    <div class="contenu-boutique">
+      <h2 id="titre-boutique">Boutique de thèmes</h2>
+
+      <p class="description-boutique">
+        Débloque de nouveaux symboles avec tes pièces.
+        Un thème acheté reste disponible.
+      </p>
+
+      <div id="liste-themes"></div>
+
+      <p id="message-boutique" role="status"></p>
+
+      <button
+        id="fermer-boutique"
+        type="button"
+        class="bouton-secondaire"
+      >
+        Retour au menu
+      </button>
+    </div>
+  </dialog>
+
+  <div id="confettis" aria-hidden="true"></div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Assaut Cosmique</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <main class="jeu">
+    <header class="barre-haut">
+      <p class="signature">DÉFENSE INTERSTELLAIRE</p>
+      <h1>ASSAUT COSMIQUE</h1>
+
+      <div class="statistiques">
+        <div>
+          <span>SCORE</span>
+          <strong id="score">0</strong>
+        </div>
+
+        <div>
+          <span>VIES</span>
+          <strong id="vies">3</strong>
+        </div>
+
+        <div>
+          <span>VAGUE</span>
+          <strong id="vague">1</strong>
+        </div>
+      </div>
+
+      <div class="statut-bonus">
+        <div class="bonus-texte">
+          <span>ARMEMENT</span>
+          <strong id="statut-bonus">LASER SIMPLE</strong>
+        </div>
+
+        <div
+          class="jauge-bonus"
+          id="jauge-bonus"
+          role="progressbar"
+          aria-label="Durée du bonus de tir"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="duree-bonus"></div>
+        </div>
+      </div>
+    </header>
+
+    <section
+      class="zone-jeu"
+      aria-label="Zone de combat spatial"
+    >
+      <canvas
+        id="canvas-jeu"
+        width="480"
+        height="720"
+        aria-label="Déplace ton vaisseau et tire sur les ennemis."
+      >
+        Ton navigateur ne prend pas en charge le Canvas.
+      </canvas>
+
+      <div class="panneau" id="ecran-accueil">
+        <p class="surtitre">PRÊT POUR LE DÉCOLLAGE ?</p>
+
+        <h2>ASSAUT<br>COSMIQUE</h2>
+
+        <p>
+          Traverse les vagues ennemies, récupère les
+          améliorations et protège ton vaisseau.
+        </p>
+
+        <button type="button" id="bouton-jouer">
+          DÉCOLLER
+        </button>
+
+        <p class="aide">
+          Flèches ou ZQSD : déplacement<br>
+          Espace : tir continu<br>
+          P : pause
+        </p>
+
+        <div class="legende-bonus">
+          <span class="cyan">II / III · TIRS</span>
+          <span class="vert">+ · VIE</span>
+        </div>
+      </div>
+
+      <div class="panneau" id="ecran-pause" hidden>
+        <p class="surtitre">SYSTÈMES EN VEILLE</p>
+        <h2>PAUSE</h2>
+
+        <button type="button" id="bouton-reprendre">
+          REPRENDRE
+        </button>
+      </div>
+
+      <div class="panneau" id="ecran-fin" hidden>
+        <p class="surtitre">FIN DE MISSION</p>
+
+        <h2>VAISSEAU<br>DÉTRUIT</h2>
+
+        <p>
+          Score : <strong id="score-final">0</strong><br>
+          Vague atteinte : <strong id="vague-finale">1</strong>
+        </p>
+
+        <button type="button" id="bouton-rejouer">
+          RECOMMENCER
+        </button>
+      </div>
+    </section>
+
+    <div class="barre-actions">
+      <span>Récupère les modules lumineux.</span>
+
+      <button
+        type="button"
+        id="bouton-pause"
+        disabled
+      >
+        PAUSE
+      </button>
+    </div>
+
+    <nav
+      class="commandes-mobile"
+      aria-label="Commandes tactiles"
+    >
+      <div class="direction">
+        <button type="button" id="haut" aria-label="Monter">
+          ↑
+        </button>
+
+        <div class="direction-ligne">
+          <button
+            type="button"
+            id="gauche"
+            aria-label="Aller à gauche"
+          >←</button>
+
+          <button
+            type="button"
+            id="bas"
+            aria-label="Descendre"
+          >↓</button>
+
+          <button
+            type="button"
+            id="droite"
+            aria-label="Aller à droite"
+          >→</button>
+        </div>
+      </div>
+
+      <button type="button" id="bouton-tir">TIR</button>
+    </nav>
+  </main>
+</body>
+</html>

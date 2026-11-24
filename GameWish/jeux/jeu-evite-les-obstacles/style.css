@@ -1,0 +1,1402 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #e5e7eb;
+  background: #0f172a;
+}
+
+.jeu {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 760px;
+  padding: 24px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  border-radius: 26px;
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.jeu.tremble {
+  animation: tremblement 0.4s ease;
+}
+
+@keyframes tremblement {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-6px, 3px); }
+  40% { transform: translate(5px, -4px); }
+  60% { transform: translate(-4px, -2px); }
+  80% { transform: translate(3px, 3px); }
+}
+
+.ecran {
+  display: none;
+  flex-direction: column;
+  min-height: 680px;
+}
+
+.ecran.visible {
+  display: flex;
+}
+
+.barre-haut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.profil,
+.ressources,
+.informations-partie {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.niveau {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(167, 139, 250, 0.18);
+  color: #c4b5fd;
+  font-weight: 700;
+}
+
+.pieces,
+.record {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(103, 232, 249, 0.12);
+  color: #cbd5e1;
+}
+
+strong {
+  color: #67e8f9;
+}
+
+.bouton-icone {
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.8);
+  color: #e5e7eb;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.zone-personnage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.personnage-accueil {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  animation: flotter 2s ease-in-out infinite;
+}
+
+@keyframes flotter {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+
+.bouton-jouer {
+  width: 100%;
+  padding: 22px;
+  border: none;
+  border-radius: 18px;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #0f172a;
+  background: linear-gradient(135deg, #67e8f9, #a78bfa);
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(167, 139, 250, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.bouton-jouer:hover {
+  transform: translateY(-3px);
+}
+
+.menu-secondaire {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.menu-secondaire button,
+.boutons-fin button,
+.bouton-fermer {
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.85);
+  color: #e5e7eb;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.menu-secondaire button:hover,
+.boutons-fin button:hover,
+.bouton-fermer:hover {
+  border-color: #a78bfa;
+  color: #c4b5fd;
+}
+
+.informations-partie {
+  font-size: 17px;
+  color: #cbd5e1;
+}
+
+.jauge-bonus {
+  margin-bottom: 14px;
+}
+
+.jauge-bonus span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #fcd34d;
+}
+
+.jauge-fond {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+}
+
+.jauge-remplissage {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #fcd34d, #67e8f9);
+  transition: width 0.1s linear;
+}
+
+.terrain {
+  position: relative;
+  height: 480px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.terrain.pause * {
+  animation-play-state: paused !important;
+}
+
+.personnage {
+  position: absolute;
+  bottom: 45px;
+  left: 100px;
+  width: 62px;
+  height: 62px;
+  z-index: 3;
+}
+
+.personnage.bouclier {
+  box-shadow:
+    0 0 0 5px rgba(103, 232, 249, 0.55),
+    0 0 30px rgba(103, 232, 249, 0.75);
+}
+
+.skin-cube {
+  border-radius: 14px;
+  background: linear-gradient(135deg, #67e8f9, #a78bfa);
+  box-shadow: 0 10px 22px rgba(103, 232, 249, 0.35);
+}
+
+.skin-robot {
+  border-radius: 10px;
+  background: linear-gradient(135deg, #94a3b8, #38bdf8);
+  box-shadow: 0 10px 22px rgba(56, 189, 248, 0.35);
+}
+
+.skin-robot::before {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  width: 5px;
+  height: 16px;
+  background: #38bdf8;
+  transform: translateX(-50%);
+}
+
+.skin-robot::after {
+  content: "";
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #f472b6;
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px #f472b6;
+}
+
+.skin-ninja {
+  border-radius: 12px 12px 5px 5px;
+  background: linear-gradient(180deg, #1f2937, #0f172a);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+}
+
+.skin-ninja::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: 0;
+  width: 100%;
+  height: 9px;
+  background: #ef4444;
+}
+
+.skin-chat {
+  border-radius: 16px 16px 12px 12px;
+  background: linear-gradient(135deg, #f472b6, #a855f7);
+  box-shadow: 0 10px 22px rgba(244, 114, 182, 0.35);
+}
+
+.skin-chat::before,
+.skin-chat::after {
+  content: "";
+  position: absolute;
+  top: -16px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 18px solid #f472b6;
+}
+
+.skin-chat::before {
+  left: 5px;
+}
+
+.skin-chat::after {
+  right: 5px;
+}
+
+.skin-flamme {
+  clip-path: polygon(50% 0%, 78% 28%, 100% 62%, 78% 100%, 22% 100%, 0% 62%, 22% 28%);
+  background: linear-gradient(180deg, #fde047, #f97316, #dc2626);
+  box-shadow: 0 10px 26px rgba(249, 115, 22, 0.45);
+}
+
+.skin-vaisseau {
+  clip-path: polygon(0% 55%, 35% 0%, 100% 30%, 100% 75%, 35% 100%);
+  background: linear-gradient(135deg, #22d3ee, #6366f1);
+  box-shadow: 0 10px 26px rgba(34, 211, 238, 0.4);
+}
+
+.obstacle {
+  position: absolute;
+  bottom: 45px;
+  left: 100%;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #f87171, #b91c1c);
+  box-shadow: 0 8px 18px rgba(248, 113, 113, 0.35);
+  z-index: 2;
+}
+
+.obstacle.bouge {
+  animation: avancer linear infinite;
+}
+
+@keyframes avancer {
+  from { left: 100%; }
+  to { left: -80px; }
+}
+
+.obstacle-triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  border-radius: 0 !important;
+}
+
+.obstacle-rond {
+  border-radius: 50% !important;
+}
+
+.obstacle-losange {
+  transform: rotate(45deg);
+  border-radius: 4px !important;
+}
+
+.piece {
+  position: absolute;
+  left: 100%;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  z-index: 2;
+  animation: avancer 2.1s linear forwards;
+}
+
+.bonus {
+  position: absolute;
+  left: 100%;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  border-radius: 50%;
+  background: rgba(252, 211, 77, 0.2);
+  border: 2px solid #fcd34d;
+  z-index: 2;
+  animation: avancer 2.6s linear forwards;
+}
+
+.particule {
+  position: absolute;
+  font-size: 18px;
+  pointer-events: none;
+  animation: particule 0.7s ease-out forwards;
+  z-index: 1;
+}
+
+@keyframes particule {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(40px) scale(0.4);
+  }
+}
+
+.sol {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 45px;
+  background: linear-gradient(90deg, #334155, #1e293b);
+  border-top: 2px solid rgba(148, 163, 184, 0.4);
+}
+
+.message {
+  margin-bottom: 14px;
+  min-height: 26px;
+  text-align: center;
+  color: #cbd5e1;
+}
+
+.message.perdu {
+  color: #f87171;
+  font-weight: 700;
+}
+
+.ecran-fin {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.badge-record {
+  padding: 10px 18px;
+  border-radius: 999px;
+  color: #0f172a;
+  background: #fcd34d;
+  font-weight: 900;
+}
+
+.resultat {
+  font-size: 20px;
+  color: #cbd5e1;
+}
+
+.boutons-fin {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 480px;
+  margin-top: 20px;
+}
+
+.fenetre {
+  width: min(560px, 94vw);
+  padding: 24px;
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  border-radius: 20px;
+  color: #e5e7eb;
+  background: #111827;
+}
+
+.fenetre h3 {
+  margin-bottom: 16px;
+  color: #a78bfa;
+}
+
+.liste-objets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.carte-objet {
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.75);
+  text-align: center;
+}
+
+.carte-objet.actif {
+  border-color: #67e8f9;
+  box-shadow: 0 0 18px rgba(103, 232, 249, 0.25);
+}
+
+.apercu {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 10px;
+}
+
+.prix {
+  margin: 6px 0 10px;
+  color: #fcd34d;
+  font-size: 13px;
+}
+
+.carte-objet button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  color: #0f172a;
+  background: #67e8f9;
+  cursor: pointer;
+}
+
+.carte-objet button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.message-boutique {
+  min-height: 24px;
+  margin-bottom: 14px;
+  color: #fcd34d;
+  text-align: center;
+}
+
+.ligne-parametre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.liste-defis {
+  margin: 0 0 20px 22px;
+  line-height: 1.9;
+}
+
+body.theme-neon .terrain {
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+}
+
+body.theme-desert .terrain {
+  background: linear-gradient(180deg, #f97316, #7c2d12);
+}
+
+body.theme-cyber .terrain {
+  background: linear-gradient(180deg, #052e16, #022c22);
+}
+
+body.theme-espace .terrain {
+  background: radial-gradient(circle at 25% 25%, #312e81, #020617);
+}
+
+@media (max-width: 700px) {
+  .jeu {
+    padding: 16px;
+  }
+
+  .menu-secondaire {
+    grid-template-columns: 1fr;
+  }
+
+  .personnage {
+    left: 40px;
+  }
+}
+
+.personnage,
+.personnage.skin-robot,
+.personnage.skin-ninja,
+.personnage.skin-chat,
+.personnage.skin-flamme,
+.personnage.skin-vaisseau {
+  position: absolute !important;
+  top: auto !important;
+  left: 100px !important;
+}
+.nuage {
+  position: absolute;
+  font-size: 80px;
+  opacity: 0.8;
+  z-index: 1;
+  pointer-events: none;
+  animation: avancer 16s linear forwards;
+}
+
+.etoile {
+  position: absolute;
+  font-size: 26px;
+  opacity: 0.9;
+  z-index: 1;
+  pointer-events: none;
+  animation: avancer 14s linear forwards;
+}
+
+/* ===== SKINS ARCADE 3D ===== */
+
+.skin-cube,
+.skin-robot,
+.skin-ninja,
+.skin-chat,
+.skin-flamme,
+.skin-vaisseau {
+  position: relative;
+  border-radius: 12px;
+  isolation: isolate;
+}
+
+/* CUBE CLASSIQUE */
+.skin-cube {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.45) 0 12%, transparent 30%),
+    linear-gradient(135deg, #7dd3fc 0%, #3b82f6 40%, #1d4ed8 75%, #172554 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -5px 8px rgba(0, 0, 0, 0.45),
+    inset 3px 0 6px rgba(255, 255, 255, 0.18),
+    0 10px 18px rgba(0, 0, 0, 0.45),
+    0 0 22px rgba(59, 130, 246, 0.75);
+}
+
+.skin-cube::after {
+  content: "";
+  position: absolute;
+  inset: 18% 22%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(191, 219, 254, 0.7);
+}
+
+/* ROBOT NÉON */
+.skin-robot {
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.18) 0 10%, transparent 28%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(34, 211, 238, 0.16) 0 2px,
+      transparent 2px 9px
+    ),
+    linear-gradient(145deg, #475569 0%, #1e293b 45%, #020617 100%);
+  border: 2px solid rgba(34, 211, 238, 0.8);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.65),
+    0 10px 18px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(34, 211, 238, 0.85);
+}
+
+.skin-robot::before {
+  content: "";
+  position: absolute;
+  top: 26%;
+  left: 16%;
+  right: 16%;
+  height: 18%;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 28% 50%, #a5f3fc 0 18%, transparent 20%),
+    radial-gradient(circle at 72% 50%, #a5f3fc 0 18%, transparent 20%),
+    linear-gradient(90deg, #0e7490, #164e63);
+  box-shadow:
+    inset 0 0 8px rgba(34, 211, 238, 0.9),
+    0 0 14px rgba(34, 211, 238, 0.7);
+}
+
+.skin-robot::after {
+  content: "";
+  position: absolute;
+  bottom: 12%;
+  left: 22%;
+  right: 22%;
+  height: 3px;
+  background: #22d3ee;
+  box-shadow: 0 0 10px #22d3ee;
+}
+
+/* NINJA */
+.skin-ninja {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.12) 0 10%, transparent 30%),
+    linear-gradient(145deg, #374151 0%, #111827 50%, #000 100%);
+  border: 2px solid rgba(239, 68, 68, 0.85);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.7),
+    0 10px 18px rgba(0, 0, 0, 0.55),
+    0 0 22px rgba(239, 68, 68, 0.8);
+}
+
+.skin-ninja::before {
+  content: "";
+  position: absolute;
+  top: 16%;
+  left: -4%;
+  right: -4%;
+  height: 16%;
+  background: linear-gradient(90deg, #b91c1c, #ef4444, #b91c1c);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.8);
+}
+
+.skin-ninja::after {
+  content: "";
+  position: absolute;
+  top: 46%;
+  left: 18%;
+  right: 18%;
+  height: 10%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #7f1d1d, #ef4444, #7f1d1d);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
+}
+
+/* CHAT CYBERNÉTIQUE */
+.skin-chat {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0 10%, transparent 28%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.07) 0 2px,
+      transparent 2px 7px
+    ),
+    linear-gradient(145deg, #a78bfa 0%, #7c3aed 45%, #3b0764 100%);
+  border: 2px solid rgba(244, 114, 182, 0.9);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.5),
+    0 10px 18px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(244, 114, 182, 0.85);
+}
+
+.skin-chat::before,
+.skin-chat::after {
+  content: "";
+  position: absolute;
+  top: -14px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 16px solid #f472b6;
+  filter: drop-shadow(0 0 6px rgba(244, 114, 182, 0.9));
+}
+
+.skin-chat::before {
+  left: 10px;
+  transform: rotate(-12deg);
+}
+
+.skin-chat::after {
+  right: 10px;
+  transform: rotate(12deg);
+}
+
+/* FLAMME */
+.skin-flamme {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.28) 0 10%, transparent 30%),
+    repeating-linear-gradient(
+      70deg,
+      rgba(253, 224, 71, 0.55) 0 2px,
+      transparent 2px 8px
+    ),
+    linear-gradient(145deg, #fde047 0%, #f97316 35%, #dc2626 70%, #7f1d1d 100%);
+  border: 2px solid rgba(250, 204, 21, 0.9);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -7px 12px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.45),
+    0 0 26px rgba(249, 115, 22, 0.9);
+}
+
+.skin-flamme::after {
+  content: "";
+  position: absolute;
+  inset: 20% 25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.9), transparent 65%);
+  filter: blur(2px);
+}
+
+/* VAISSEAU */
+.skin-vaisseau {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.5) 0 12%, transparent 32%),
+    linear-gradient(145deg, #e2e8f0 0%, #94a3b8 40%, #334155 75%, #0f172a 100%);
+  border: 2px solid rgba(34, 211, 238, 0.85);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.55),
+    0 10px 18px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(34, 211, 238, 0.8);
+}
+
+.skin-vaisseau::before {
+  content: "";
+  position: absolute;
+  top: 24%;
+  left: 14%;
+  right: 14%;
+  height: 20%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #0ea5e9, #67e8f9, #0ea5e9);
+  box-shadow:
+    inset 0 0 8px rgba(255, 255, 255, 0.7),
+    0 0 14px rgba(34, 211, 238, 0.9);
+}
+
+.skin-vaisseau::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 28%;
+  right: 28%;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #22d3ee, #a5f3fc, #22d3ee);
+  filter: blur(3px);
+}
+/* ===== LUEURS NÉON DES SKINS ===== */
+
+.skin-cube {
+  border-color: #0099ff;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -5px 8px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(0, 153, 255, 0.7),
+    0 0 34px rgba(0, 153, 255, 0.45);
+}
+
+.skin-robot {
+  border-color: #00f3ff;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.65),
+    0 10px 18px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 243, 255, 0.9),
+    0 0 38px rgba(0, 243, 255, 0.5);
+}
+
+.skin-ninja {
+  border-color: #ff0033;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.7),
+    0 10px 18px rgba(0, 0, 0, 0.55),
+    0 0 20px rgba(255, 0, 51, 0.8),
+    0 0 38px rgba(255, 0, 51, 0.45);
+}
+
+.skin-chat {
+  border-color: #ff007f;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.5),
+    0 10px 18px rgba(0, 0, 0, 0.45),
+    0 0 20px rgba(255, 0, 127, 0.85),
+    0 0 38px rgba(255, 0, 127, 0.5);
+}
+
+.skin-flamme {
+  border-color: #ff8c00;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -7px 12px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.45),
+    0 0 22px rgba(255, 140, 0, 0.9),
+    0 0 40px rgba(255, 140, 0, 0.5);
+}
+
+.skin-vaisseau {
+  border-color: #3a86ff;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.55),
+    0 10px 18px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(58, 134, 255, 0.85),
+    0 0 38px rgba(58, 134, 255, 0.5);
+}
+/* ==================================================
+   SKINS CUBIQUES ARCADE — REFONTE VISUELLE
+   ================================================== */
+
+/* Préparation des trois emplacements :
+   boutique, accueil et partie.
+   On ne change pas la position du personnage en jeu. */
+
+.apercu[class*="skin-"],
+.personnage-accueil[class*="skin-"],
+.personnage[class*="skin-"] {
+  --neon: #0099ff;
+  --halo: rgba(0, 153, 255, 0.7);
+
+  box-sizing: border-box;
+  isolation: isolate;
+  overflow: visible;
+
+  border: 1px solid var(--neon);
+  border-radius: 15%;
+  background-color: #071426;
+
+  box-shadow:
+    inset 0 2px 1px rgba(255, 255, 255, 0.85),
+    inset 2px 0 2px rgba(255, 255, 255, 0.25),
+    inset -4px -5px 3px rgba(0, 0, 0, 0.6),
+    0 7px 8px -3px rgba(0, 0, 0, 0.8),
+    0 0 9px var(--halo),
+    0 0 23px var(--halo);
+
+  /* Annule les éventuels anciens effets sur les skins. */
+  filter: none;
+}
+
+/* Les détails se positionnent dans les aperçus. */
+.apercu[class*="skin-"],
+.personnage-accueil[class*="skin-"] {
+  position: relative;
+}
+
+/* Aperçus plus lisibles dans la boutique. */
+.apercu[class*="skin-"] {
+  width: 68px;
+  height: 68px;
+  margin: 22px auto 18px;
+  flex-shrink: 0;
+}
+
+/* Remise à zéro des anciens détails décoratifs. */
+.apercu[class*="skin-"]::before,
+.apercu[class*="skin-"]::after,
+.personnage-accueil[class*="skin-"]::before,
+.personnage-accueil[class*="skin-"]::after,
+.personnage[class*="skin-"]::before,
+.personnage[class*="skin-"]::after {
+  content: "";
+  display: block;
+  position: absolute;
+  box-sizing: border-box;
+
+  inset: auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  transform: none;
+  animation: none;
+  pointer-events: none;
+}
+
+/* ==================================================
+   1. CUBE CLASSIQUE — CRISTAL BLEU POLI
+   ================================================== */
+
+.apercu.skin-cube,
+.personnage-accueil.skin-cube,
+.personnage.skin-cube {
+  --neon: #0099ff;
+  --halo: rgba(0, 153, 255, 0.7);
+
+  background:
+    /* Lumière réfléchie sur l'arête supérieure. */
+    linear-gradient(
+      110deg,
+      transparent 15%,
+      rgba(255, 255, 255, 0.55) 18%,
+      transparent 23%
+    ) top / 100% 5% no-repeat,
+
+    /* Face latérale ombrée. */
+    linear-gradient(
+      90deg,
+      #0059d5,
+      #001c72
+    ) right bottom / 20% 78% no-repeat,
+
+    /* Dessus clair du cube. */
+    linear-gradient(
+      160deg,
+      #8ef6ff,
+      #00baff 55%,
+      #0075e6
+    ) top / 100% 23% no-repeat,
+
+    /* Face avant. */
+    linear-gradient(
+      135deg,
+      #17caff 0%,
+      #0099ff 30%,
+      #0063dc 65%,
+      #002980 100%
+    );
+}
+
+.skin-cube::before {
+  inset: 24% 21% 7% 7% !important;
+  border-radius: 4% !important;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.3),
+    transparent 43%,
+    rgba(0, 20, 90, 0.2)
+  ) !important;
+}
+
+.skin-cube::after {
+  top: 23% !important;
+  bottom: 5% !important;
+  right: 19% !important;
+  width: 2% !important;
+  background: #76eaff !important;
+  box-shadow: 0 0 5px #00c8ff !important;
+}
+
+/* ==================================================
+   2. ROBOT — ARMURE CYAN ET VIOLET
+   ================================================== */
+
+.apercu.skin-robot,
+.personnage-accueil.skin-robot,
+.personnage.skin-robot {
+  --neon: #00f3ff;
+  --halo: rgba(0, 243, 255, 0.9);
+
+  border-radius: 12%;
+
+  background:
+    /* Séparation verticale des plaques. */
+    linear-gradient(#061326, #061326)
+      72% 50% / 5% 100% no-repeat,
+
+    /* Plaque supérieure cyan. */
+    linear-gradient(135deg, #baffff, #00e5f5 55%, #087cba)
+      10% 7% / 49% 18% no-repeat,
+
+    /* Plaque supérieure violette. */
+    linear-gradient(135deg, #f1a0ff, #a020e5 55%, #47096e)
+      94% 7% / 25% 18% no-repeat,
+
+    /* Plaque inférieure cyan. */
+    linear-gradient(135deg, #79ffff, #00bfd8 55%, #08628d)
+      10% 94% / 34% 20% no-repeat,
+
+    /* Plaque inférieure violette. */
+    linear-gradient(135deg, #dd6dff, #8529db 60%, #39115e)
+      66% 94% / 22% 20% no-repeat,
+
+    /* Petites lignes du panneau latéral. */
+    repeating-linear-gradient(
+      0deg,
+      #00f3ff 0 2px,
+      #152244 2px 5px
+    ) 94% 55% / 13% 39% no-repeat,
+
+    linear-gradient(135deg, #425572, #14253d 45%, #070c1c);
+}
+
+.skin-robot::before {
+  top: 32% !important;
+  left: 9% !important;
+  width: 58% !important;
+  height: 31% !important;
+
+  border: 2px solid #933cff !important;
+  border-radius: 13% !important;
+
+  background:
+    linear-gradient(#b4ffff, #00e5ff)
+      18% 48% / 27% 35% no-repeat,
+    linear-gradient(#b4ffff, #00e5ff)
+      82% 48% / 27% 35% no-repeat,
+    linear-gradient(145deg, #17263f, #020611) !important;
+
+  box-shadow:
+    inset 0 2px 2px #000,
+    0 0 5px #bd35ff !important;
+}
+
+.skin-robot::after {
+  top: -6% !important;
+  left: 33% !important;
+  width: 35% !important;
+  height: 10% !important;
+
+  border: 1px solid #98ffff !important;
+  border-radius: 20% !important;
+  background: linear-gradient(#baffff, #00d8ed) !important;
+
+  box-shadow:
+    0 2px 0 #286883,
+    0 0 8px #00f3ff !important;
+}
+
+/* ==================================================
+   3. NINJA — CUBE NOIR ET BANDEAU ROUGE
+   ================================================== */
+
+.apercu.skin-ninja,
+.personnage-accueil.skin-ninja,
+.personnage.skin-ninja {
+  --neon: #ff0033;
+  --halo: rgba(255, 0, 51, 0.8);
+
+  border-radius: 10%;
+
+  background:
+    /* Bandeau traversant le cube. */
+    linear-gradient(
+      180deg,
+      #ff667b,
+      #ff0033 24%,
+      #b50025 75%,
+      #650019
+    ) 0 30% / 100% 19% no-repeat,
+
+    /* Face latérale. */
+    linear-gradient(90deg, #191721, #030307)
+      right bottom / 20% 68% no-repeat,
+
+    /* Dessus légèrement réfléchissant. */
+    linear-gradient(145deg, #56515f, #27232e 55%, #121017)
+      top / 100% 26% no-repeat,
+
+    linear-gradient(135deg, #35313d, #14121c 58%, #050509);
+}
+
+.skin-ninja::before {
+  top: 49% !important;
+  left: 12% !important;
+  width: 61% !important;
+  height: 24% !important;
+
+  border-radius: 8% !important;
+
+  background:
+    linear-gradient(165deg, #ffffff, #ff0033)
+      13% 45% / 30% 25% no-repeat,
+    linear-gradient(195deg, #ffffff, #ff0033)
+      87% 45% / 30% 25% no-repeat,
+    #06050a !important;
+
+  box-shadow:
+    inset 0 2px 3px #000,
+    0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.skin-ninja::after {
+  top: 27% !important;
+  left: -19% !important;
+  width: 25% !important;
+  height: 39% !important;
+
+  background: linear-gradient(
+    135deg,
+    #ff4964,
+    #d9002c 45%,
+    #680018
+  ) !important;
+
+  clip-path: polygon(
+    100% 0,
+    100% 48%,
+    25% 100%,
+    32% 59%,
+    0 36%
+  );
+}
+
+/* ==================================================
+   4. CHAT CYBER — MASQUE VIOLET ET OREILLES
+   ================================================== */
+
+.apercu.skin-chat,
+.personnage-accueil.skin-chat,
+.personnage.skin-chat {
+  --neon: #ff007f;
+  --halo: rgba(255, 0, 127, 0.85);
+
+  border-radius: 14%;
+
+  background:
+    /* Yeux lumineux. */
+    linear-gradient(160deg, #ffd3f5, #ff007f)
+      24% 43% / 17% 12% no-repeat,
+    linear-gradient(200deg, #ffd3f5, #ff007f)
+      70% 43% / 17% 12% no-repeat,
+
+    /* Petit nez intégré. */
+    linear-gradient(#ff78d0, #cf006b)
+      48% 62% / 9% 7% no-repeat,
+
+    /* Moustaches épurées. */
+    linear-gradient(15deg, transparent 40%, #ff43b0 43% 57%, transparent 60%)
+      8% 64% / 27% 9% no-repeat,
+    linear-gradient(-15deg, transparent 40%, #ff43b0 43% 57%, transparent 60%)
+      89% 64% / 27% 9% no-repeat,
+    linear-gradient(-15deg, transparent 40%, #ff43b0 43% 57%, transparent 60%)
+      8% 77% / 27% 9% no-repeat,
+    linear-gradient(15deg, transparent 40%, #ff43b0 43% 57%, transparent 60%)
+      89% 77% / 27% 9% no-repeat,
+
+    /* Face latérale et matière sombre. */
+    linear-gradient(
+      90deg,
+      transparent 81%,
+      rgba(5, 0, 18, 0.65) 82%
+    ),
+    linear-gradient(140deg, #8e54bd, #3b1759 35%, #190b2d 75%, #080511);
+}
+
+.skin-chat::before,
+.skin-chat::after {
+  top: -23% !important;
+  width: 34% !important;
+  height: 38% !important;
+
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 30%,
+      #ff58c8 32% 68%,
+      transparent 70%
+    ) center bottom / 66% 61% no-repeat,
+    linear-gradient(135deg, #bc6bea, #48216a 55%, #160b25) !important;
+
+  filter: drop-shadow(0 -2px 2px #ff007f) !important;
+}
+
+.skin-chat::before {
+  left: 2% !important;
+  transform: rotate(-13deg) !important;
+}
+
+.skin-chat::after {
+  right: 2% !important;
+  transform: rotate(13deg) !important;
+}
+
+/* ==================================================
+   5. FLAMME — CUBE DE LAVE INCANDESCENT
+   ================================================== */
+
+.apercu.skin-flamme,
+.personnage-accueil.skin-flamme,
+.personnage.skin-flamme {
+  --neon: #ff8c00;
+  --halo: rgba(255, 140, 0, 0.9);
+
+  border-color: #ffd34d;
+  border-radius: 10%;
+
+  background:
+    /* Fissures lumineuses irrégulières. */
+    linear-gradient(
+      115deg,
+      transparent 29%,
+      #ffca24 30%,
+      #fff49b 32%,
+      #ff9d00 34%,
+      transparent 35%
+    ),
+    linear-gradient(
+      60deg,
+      transparent 57%,
+      #ffb000 58%,
+      #fff08a 60%,
+      #ff7400 62%,
+      transparent 63%
+    ),
+    linear-gradient(
+      155deg,
+      transparent 48%,
+      #ff9d00 49%,
+      #ffe566 51%,
+      transparent 53%
+    ),
+
+    /* Dessus très chaud. */
+    radial-gradient(
+      ellipse at 40% 30%,
+      #fffbb2,
+      #ffd52a 45%,
+      #ff8c00 85%
+    ) top / 100% 25% no-repeat,
+
+    /* Face latérale plus sombre. */
+    linear-gradient(90deg, #be2906, #731204)
+      right bottom / 20% 75% no-repeat,
+
+    /* Corps de lave. */
+    radial-gradient(
+      ellipse at 35% 75%,
+      #ffcf24,
+      #ff7b00 38%,
+      #d93905 68%,
+      #8f1705
+    );
+}
+
+.skin-flamme::before {
+  left: 10% !important;
+  bottom: 9% !important;
+  width: 29% !important;
+  height: 46% !important;
+
+  border-radius: 70% 15% 60% 40% !important;
+  transform: rotate(-16deg) !important;
+
+  background: linear-gradient(
+    0deg,
+    #fff4a0,
+    #ffca18 50%,
+    #ff8c00
+  ) !important;
+
+  box-shadow: 0 0 8px #ffba00 !important;
+}
+
+.skin-flamme::after {
+  right: 24% !important;
+  bottom: 14% !important;
+  width: 19% !important;
+  height: 32% !important;
+
+  border-radius: 15% 80% 40% 60% !important;
+  transform: rotate(15deg) !important;
+
+  background: linear-gradient(
+    0deg,
+    #fff9b1,
+    #ffd329 55%,
+    #ff8c00
+  ) !important;
+}
+
+/* ==================================================
+   6. VAISSEAU — BLINDAGE ARGENT ET COCKPIT BLEU
+   ================================================== */
+
+.apercu.skin-vaisseau,
+.personnage-accueil.skin-vaisseau,
+.personnage.skin-vaisseau {
+  --neon: #3a86ff;
+  --halo: rgba(58, 134, 255, 0.85);
+
+  border-color: #9fceff;
+  border-radius: 13%;
+
+  background:
+    /* Cockpit central avec reflet. */
+    linear-gradient(
+      130deg,
+      #e9ffff 0%,
+      #7ce5ff 18%,
+      #208fff 42%,
+      #064ba9 75%,
+      #082653 100%
+    ) 50% 39% / 39% 48% no-repeat,
+
+    /* Joint sombre autour du cockpit. */
+    linear-gradient(#10243f, #10243f)
+      50% 39% / 48% 58% no-repeat,
+
+    /* Plaques de blindage. */
+    linear-gradient(135deg, #f0f7ff, #a1b9d3 50%, #3c536f)
+      6% 12% / 20% 29% no-repeat,
+    linear-gradient(135deg, #e5f1ff, #879fba 50%, #263d59)
+      94% 12% / 20% 29% no-repeat,
+    linear-gradient(135deg, #cfedff, #718eae 55%, #26384f)
+      9% 91% / 20% 25% no-repeat,
+    linear-gradient(135deg, #cfedff, #718eae 55%, #26384f)
+      91% 91% / 20% 25% no-repeat,
+
+    /* Ligne d'énergie inférieure. */
+    linear-gradient(#b0ffff, #278cff)
+      50% 93% / 30% 7% no-repeat,
+
+    linear-gradient(135deg, #c1d4e7, #667d98 35%, #253950 70%, #101d30);
+}
+
+.skin-vaisseau::before,
+.skin-vaisseau::after {
+  top: 48% !important;
+  width: 29% !important;
+  height: 34% !important;
+
+  border-bottom: 2px solid #3a86ff !important;
+
+  background: linear-gradient(
+    155deg,
+    #e1f7ff,
+    #8faeca 40%,
+    #304e72 75%,
+    #152843
+  ) !important;
+
+  filter: drop-shadow(0 2px 3px rgba(58, 134, 255, 0.8)) !important;
+}
+
+.skin-vaisseau::before {
+  left: -25% !important;
+  clip-path: polygon(100% 0, 100% 100%, 0 83%, 15% 60%);
+}
+
+.skin-vaisseau::after {
+  right: -25% !important;
+  clip-path: polygon(0 0, 85% 60%, 100% 83%, 0 100%);
+}

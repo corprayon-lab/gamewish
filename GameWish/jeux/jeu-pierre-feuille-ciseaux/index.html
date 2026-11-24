@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Shifumi Arena</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navigation">
+    <a class="logo" href="./index.html">
+      SHIFUMI <span>ARENA</span>
+    </a>
+
+    <span class="mode-jeu">TOI CONTRE L’ORDINATEUR</span>
+
+    <div class="objectif">PREMIER À 3 VICTOIRES</div>
+  </header>
+
+  <main class="application">
+
+    <section id="ecran-demarrage" class="ecran visible">
+      <div class="accueil">
+        <p class="surtitre">ENTRE DANS L’ARÈNE</p>
+
+        <h1>Un choix.<br>Un duel.<br>Une victoire.</h1>
+
+        <p class="description">
+          Tu as 5 secondes pour choisir ton coup.
+          Le premier à gagner 3 manches remporte le match.
+        </p>
+
+        <button id="bouton-demarrer" class="gros-bouton">
+          DÉMARRER LE MATCH
+        </button>
+      </div>
+    </section>
+
+    <section id="ecran-jeu" class="ecran">
+
+      <header class="tableau-match">
+        <div class="carte-joueur equipe-bleue">
+          <span class="etiquette">JOUEUR</span>
+          <h2>Toi</h2>
+          <strong id="score-joueur">0</strong>
+        </div>
+
+        <div class="informations-manche">
+          <p>MANCHE <span id="numero-manche">1</span></p>
+          <strong id="compte">5</strong>
+          <span>PREMIER À 3</span>
+        </div>
+
+        <div class="carte-joueur equipe-rouge">
+          <span class="etiquette">ADVERSAIRE</span>
+          <h2>Ordinateur</h2>
+          <strong id="score-ordinateur">0</strong>
+        </div>
+      </header>
+
+      <div class="arene" id="arene">
+        <div class="halo halo-bleu"></div>
+        <div class="halo halo-rouge"></div>
+
+        <div class="combattant combattant-joueur">
+          <div id="main-joueur" class="main-duel"></div>
+          <span>TON COUP</span>
+        </div>
+
+        <div class="versus">VS</div>
+
+        <div class="combattant combattant-ordinateur">
+          <div id="main-ordinateur" class="main-duel"></div>
+          <span>SON COUP</span>
+        </div>
+
+        <p id="message" aria-live="polite">
+          Prépare-toi !
+        </p>
+      </div>
+
+      <footer class="panneau-commandes">
+        <div class="entete-commandes">
+          <p id="consigne">CHOISIS TON COUP</p>
+          <span>PIERRE · FEUILLE · CISEAUX</span>
+        </div>
+
+        <div
+          id="barre-temps"
+          role="progressbar"
+          aria-label="Temps restant pour choisir"
+          aria-valuemin="0"
+          aria-valuemax="5"
+          aria-valuenow="5"
+        >
+          <div id="progression"></div>
+        </div>
+
+        <div class="boutons">
+          <button class="choix" data-choix="pierre">
+            <span class="icone-choix" aria-hidden="true"></span>
+            <span>PIERRE</span>
+          </button>
+
+          <button class="choix" data-choix="feuille">
+            <span class="icone-choix" aria-hidden="true"></span>
+            <span>FEUILLE</span>
+          </button>
+
+          <button class="choix" data-choix="ciseaux">
+            <span class="icone-choix" aria-hidden="true"></span>
+            <span>CISEAUX</span>
+          </button>
+        </div>
+      </footer>
+
+    </section>
+
+    <section id="ecran-fin" class="ecran">
+      <div class="bilan-match">
+        <p class="surtitre">MATCH TERMINÉ</p>
+        <h1 id="titre-fin"></h1>
+        <p id="message-fin"></p>
+
+        <button id="bouton-rejouer" class="gros-bouton">
+          REJOUER
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="confettis" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
